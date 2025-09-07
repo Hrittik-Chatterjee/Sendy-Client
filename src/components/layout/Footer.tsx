@@ -2,7 +2,7 @@ import { Logo } from "@/assets/icons/Logo";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary">
+    <footer className="bg-background border-t">
       <div className="mx-auto container space-y-8  py-6 sm:px-6 lg:space-y-16 lg:px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
