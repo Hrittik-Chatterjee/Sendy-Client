@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 const registerSchema = z
   .object({
@@ -67,9 +69,30 @@ export function RegisterForm({
       roles: [],
     },
   });
+  const [register] = useRegisterMutation();
+  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+    const userInfo = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      roles: data.roles,
+    };
+    try {
+      const result = await register(userInfo).unwrap();
+      console.log(result);
+      toast.success("Account created successfully!", {
+        description:
+          "Welcome! Your account has been created and you can now sign in.",
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error(error);
 
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
-    console.log(data);
+      toast.error("Registration failed", {
+        description: "Failed to create account",
+        position: "top-center",
+      });
+    }
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -188,7 +211,9 @@ export function RegisterForm({
                   name="roles"
                   render={() => (
                     <FormItem>
-                      <FormLabel>Select your role (at least one required)</FormLabel>
+                      <FormLabel>
+                        Select your role (at least one required)
+                      </FormLabel>
                       <div className="flex flex-col space-y-2">
                         <FormField
                           control={form.control}
@@ -204,7 +229,10 @@ export function RegisterForm({
                                     checked={field.value?.includes("SENDER")}
                                     onCheckedChange={(checked) => {
                                       return checked
-                                        ? field.onChange([...field.value, "SENDER"])
+                                        ? field.onChange([
+                                            ...field.value,
+                                            "SENDER",
+                                          ])
                                         : field.onChange(
                                             field.value?.filter(
                                               (value) => value !== "SENDER"
@@ -234,7 +262,10 @@ export function RegisterForm({
                                     checked={field.value?.includes("RECEIVER")}
                                     onCheckedChange={(checked) => {
                                       return checked
-                                        ? field.onChange([...field.value, "RECEIVER"])
+                                        ? field.onChange([
+                                            ...field.value,
+                                            "RECEIVER",
+                                          ])
                                         : field.onChange(
                                             field.value?.filter(
                                               (value) => value !== "RECEIVER"
