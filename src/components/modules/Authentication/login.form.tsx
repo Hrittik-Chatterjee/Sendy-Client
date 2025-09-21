@@ -21,16 +21,14 @@ import {
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const loginSchema = z.object({
   email: z
     .email({ message: "Invalid email address format." })
     .min(5, { message: "Email must be at least 5 characters long." })
     .max(100, { message: "Email cannot exceed 100 characters." }),
-  password: z
-    .string()
-    .min(1, { message: "Password is required." }),
+  password: z.string().min(1, { message: "Password is required." }),
 });
 
 export function LoginForm({
@@ -46,6 +44,7 @@ export function LoginForm({
   });
 
   const [login] = useLoginMutation();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const userInfo = {
@@ -59,12 +58,22 @@ export function LoginForm({
         description: "Welcome back! You have been logged in successfully.",
         position: "top-center",
       });
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error(error);
-      toast.error("Login failed", {
-        description: "Invalid email or password. Please try again.",
-        position: "top-center",
-      });
+
+      if (error?.status === 401) {
+        toast.error("Your Account is Not Verified", {
+          description: "Please verify your account before login",
+          position: "top-center",
+        });
+        navigate("/verify", { state: data.email });
+      } else {
+        toast.error("Login failed", {
+          description: "Invalid email or password. Please try again.",
+          position: "top-center",
+        });
+      }
     }
   };
 

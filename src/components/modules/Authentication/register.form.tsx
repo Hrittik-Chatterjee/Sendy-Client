@@ -22,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 const registerSchema = z
   .object({
@@ -69,6 +70,7 @@ export function RegisterForm({
       roles: [],
     },
   });
+  const navigate = useNavigate();
   const [register] = useRegisterMutation();
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     const userInfo = {
@@ -85,6 +87,7 @@ export function RegisterForm({
           "Welcome! Your account has been created and you can now sign in.",
         position: "top-center",
       });
+      navigate("/verify");
     } catch (error) {
       console.error(error);
 
