@@ -1,3 +1,3 @@
 export const config = {
-  basaeURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL,
 };

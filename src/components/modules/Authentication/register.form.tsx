@@ -88,11 +88,13 @@ export function RegisterForm({
         position: "top-center",
       });
       navigate("/verify");
-    } catch (error) {
-      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      console.error("Error details:", JSON.stringify(error, null, 2));
 
       toast.error("Registration failed", {
-        description: "Failed to create account",
+        description: error?.data?.message || "Failed to create account",
         position: "top-center",
       });
     }
