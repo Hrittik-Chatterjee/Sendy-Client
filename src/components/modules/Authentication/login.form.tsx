@@ -58,11 +58,21 @@ export function LoginForm({
         description: "Welcome back! You have been logged in successfully.",
         position: "top-center",
       });
+
+      navigate("/");
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
 
-      if (error?.status === 401) {
+      // Check if the error message specifically indicates unverified account
+      const errorMessage = error?.data?.message || "";
+      const isUnverified =
+        errorMessage.toLowerCase().includes("verify") ||
+        errorMessage.toLowerCase().includes("not verified") ||
+        error?.data?.data?.isVerified === false;
+
+      if (error?.status === 401 && isUnverified) {
         toast.error("Your Account is Not Verified", {
           description: "Please verify your account before login",
           position: "top-center",
@@ -70,7 +80,9 @@ export function LoginForm({
         navigate("/verify", { state: data.email });
       } else {
         toast.error("Login failed", {
-          description: "Invalid email or password. Please try again.",
+          description:
+            error?.data?.message ||
+            "Invalid email or password. Please try again.",
           position: "top-center",
         });
       }

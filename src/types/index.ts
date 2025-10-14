@@ -18,4 +18,4 @@ export interface ISidebarItem {
   }[];
 }
 
-export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER";
+export type TRole = "SUPER_ADMIN" | "ADMIN" | "SENDER" | "RECEIVER";

@@ -83,10 +83,16 @@ export default function Verify() {
       const res = await verifyOtp(userInfo).unwrap();
       if (res.success) {
         toast.success("OTP Verified", { id: toastId });
-        setConfirmed(true);
+        navigate("/login");
       }
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.log(err);
+      toast.error("Verification Failed", {
+        id: toastId,
+        description: err?.data?.message || "Invalid OTP. Please try again.",
+      });
+      form.reset();
     }
   };
 

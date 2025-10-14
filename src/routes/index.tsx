@@ -12,6 +12,7 @@ import { createBrowserRouter } from "react-router";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { adminSidebarItems } from "./adminsidebaritems";
 import { senderSideBarItems } from "./senderSideBarItems";
+import { receiverSidebarItems } from "./receiverSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,12 @@ export const router = createBrowserRouter([
     path: "/sender",
 
     children: [...generateRoutes(senderSideBarItems)],
+  },
+  {
+    Component: DashboardLayout,
+    path: "/receiver",
+
+    children: [...generateRoutes(receiverSidebarItems)],
   },
 
   {

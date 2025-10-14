@@ -84,7 +84,7 @@ export function RegisterForm({
       console.log(result);
       toast.success("Account created successfully!", {
         description:
-          "Welcome! Your account has been created and you can now sign in.",
+          "Welcome! Your account has been created, now verify your account and login",
         position: "top-center",
       });
       navigate("/verify", { state: data.email });

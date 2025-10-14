@@ -18,7 +18,7 @@ export const senderSideBarItems: ISidebarItem[] = [
         component: parcelDetails,
       },
       {
-        title: "Parcel Details",
+        title: "History",
         url: "/sender/history",
         component: history,
       },
