@@ -5,9 +5,13 @@ import About from "@/pages/About";
 import Analytics from "@/pages/admin/Analytics";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import CreatedParcels from "@/pages/sender/CreatedParcels";
+
 import Verify from "@/pages/Verify";
 import { createBrowserRouter } from "react-router";
+
+import { generateRoutes } from "@/utils/generateRoutes";
+import { adminSidebarItems } from "./adminsidebaritems";
+import { senderSideBarItems } from "./senderSideBarItems";
 
 export const router = createBrowserRouter([
   {
@@ -23,22 +27,13 @@ export const router = createBrowserRouter([
   {
     Component: DashboardLayout,
     path: "/admin",
-    children: [
-      {
-        Component: Analytics,
-        path: "analytics",
-      },
-    ],
+    children: [...generateRoutes(adminSidebarItems)],
   },
   {
     Component: DashboardLayout,
     path: "/sender",
-    children: [
-      {
-        Component: CreatedParcels,
-        path: "parcels",
-      },
-    ],
+
+    children: [...generateRoutes(senderSideBarItems)],
   },
 
   {
