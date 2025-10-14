@@ -1,4 +1,3 @@
-import { Logo } from "@/assets/icons/Logo";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -11,21 +10,38 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ModeToggle } from "./mode.toggle";
+
 import { Link } from "react-router";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hook";
+import { ModeToggle } from "./mode.toggle";
+import { Logo } from "@/assets/icons/Logo";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "", label: "Pricing" },
-  { href: "#", label: "About" },
 ];
 
 export default function Navbar() {
+  const { data } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+  console.log(data?.data?.data?.email);
+  console.log(data);
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+  };
+
   return (
-    <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
+    <header className="border-b">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -69,7 +85,7 @@ export default function Navbar() {
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink asChild className="py-1.5">
-                        <Link to={link.href}>{link.label}</Link>
+                        <Link to={link.href}>{link.label} </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -102,10 +118,20 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-
-          <Button asChild size="sm" className="text-sm">
-            <Link to="/login">Login</Link>
-          </Button>
+          {data?.data?.data?.email && (
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="text-sm"
+            >
+              Logout
+            </Button>
+          )}
+          {!data?.data?.data?.email && (
+            <Button asChild className="text-sm">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

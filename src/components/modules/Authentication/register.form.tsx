@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const registerSchema = z
   .object({
@@ -87,7 +87,7 @@ export function RegisterForm({
           "Welcome! Your account has been created and you can now sign in.",
         position: "top-center",
       });
-      navigate("/verify");
+      navigate("/verify", { state: data.email });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Registration error:", error);
@@ -297,6 +297,13 @@ export function RegisterForm({
               </div>
             </form>
           </Form>
+
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="underline underline-offset-4">
+              Log In
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

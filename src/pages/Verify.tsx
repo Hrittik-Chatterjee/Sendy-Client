@@ -47,7 +47,7 @@ export default function Verify() {
   const [confirmed, setConfirmed] = useState(false);
   const [sendOtp] = useSendOtpMutation();
   const [verifyOtp] = useVerifyOtpMutation();
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(0);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -65,7 +65,7 @@ export default function Verify() {
       if (res.success) {
         toast.success("OTP Sent", { id: toastId });
         setConfirmed(true);
-        setTimer(5);
+        setTimer(60);
       }
     } catch (err) {
       console.log(err);
@@ -98,17 +98,14 @@ export default function Verify() {
   //   }, [email]);
 
   useEffect(() => {
-    if (!email || !confirmed) {
-      return;
+    if (timer > 0) {
+      const timerId = setInterval(() => {
+        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+
+      return () => clearInterval(timerId);
     }
-
-    const timerId = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
-      console.log("Tick");
-    }, 1000);
-
-    return () => clearInterval(timerId);
-  }, [email, confirmed]);
+  }, [timer]);
 
   return (
     <div className="grid place-content-center h-screen">
