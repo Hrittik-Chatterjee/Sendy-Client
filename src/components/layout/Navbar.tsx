@@ -20,11 +20,16 @@ import {
 import { useAppDispatch } from "@/redux/hook";
 import { ModeToggle } from "./mode.toggle";
 import { Logo } from "@/assets/icons/Logo";
+import { role } from "@/constants/role";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/admin", label: "Dashboard", role: role.superAdmin },
+  { href: "/sender", label: "Dashboard", role: role.sender },
+  { href: "/receiver", label: "Dashboard", role: role.receiver },
 ];
 
 export default function Navbar() {
@@ -32,6 +37,7 @@ export default function Navbar() {
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
   console.log(data?.data?.data?.email);
+  console.log(data?.data?.data?.roles);
   console.log(data);
 
   const handleLogout = async () => {
@@ -101,16 +107,38 @@ export default function Navbar() {
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      <Link to={link.href}>{link.label}</Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
+                {navigationLinks.map((link, index) => {
+                  // Track if we've already shown a dashboard
+                  const isDashboard = link.label === "Dashboard";
+                  const dashboardAlreadyShown = isDashboard && navigationLinks
+                    .slice(0, index)
+                    .some(l => l.label === "Dashboard" && data?.data?.data?.roles?.includes(l.role));
+
+                  return (
+                    <>
+                      {link.role === "PUBLIC" && (
+                        <NavigationMenuItem key={index}>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                      {data?.data?.data?.roles?.includes(link.role) && !dashboardAlreadyShown && (
+                        <NavigationMenuItem key={index}>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                    </>
+                  );
+                })}
               </NavigationMenuList>
             </NavigationMenu>
           </div>

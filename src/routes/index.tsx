@@ -1,18 +1,26 @@
 import App from "@/App";
-import AdminLayout from "@/components/layout/AdminLayout";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import About from "@/pages/About";
-import Analytics from "@/pages/admin/Analytics";
+
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 
 import Verify from "@/pages/Verify";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import { generateRoutes } from "@/utils/generateRoutes";
 import { adminSidebarItems } from "./adminsidebaritems";
 import { senderSideBarItems } from "./senderSideBarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
+import Unauthorized from "@/pages/Unauthorized";
+import { withAuth } from "@/utils/withAuth";
+import { role } from "@/constants/role";
+
+// Create protected dashboard layouts
+const AdminDashboard = withAuth(DashboardLayout, role.admin as "ADMIN");
+const SenderDashboard = withAuth(DashboardLayout, role.sender as "SENDER");
+const ReceiverDashboard = withAuth(DashboardLayout, role.receiver as "RECEIVER");
 
 export const router = createBrowserRouter([
   {
@@ -26,21 +34,28 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: AdminDashboard,
     path: "/admin",
-    children: [...generateRoutes(adminSidebarItems)],
+    children: [
+      { index: true, element: <Navigate to="/admin/analytics" /> },
+      ...generateRoutes(adminSidebarItems),
+    ],
   },
   {
-    Component: DashboardLayout,
+    Component: SenderDashboard,
     path: "/sender",
-
-    children: [...generateRoutes(senderSideBarItems)],
+    children: [
+      { index: true, element: <Navigate to="/sender/send-parcel" /> },
+      ...generateRoutes(senderSideBarItems),
+    ],
   },
   {
-    Component: DashboardLayout,
+    Component: ReceiverDashboard,
     path: "/receiver",
-
-    children: [...generateRoutes(receiverSidebarItems)],
+    children: [
+      { index: true, element: <Navigate to="/receiver/incoming-parcels" /> },
+      ...generateRoutes(receiverSidebarItems),
+    ],
   },
 
   {
@@ -57,13 +72,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    Component: AdminLayout,
-    path: "/admin",
-    children: [
-      {
-        Component: Analytics,
-        path: "analytics",
-      },
-    ],
+    Component: Unauthorized,
+    path: "/unauthorized",
   },
 ]);
