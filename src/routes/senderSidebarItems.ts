@@ -2,7 +2,7 @@ import { lazy } from "react";
 import type { ISidebarItem } from "@/types";
 
 const SendParcel = lazy(() => import("@/pages/sender/sendParcel"));
-const ParcelDetails = lazy(() => import("@/pages/sender/parcelDetails"));
+const onGoingParcel = lazy(() => import("@/pages/sender/onGoingParcel"));
 const History = lazy(() => import("@/pages/sender/history"));
 
 export const senderSideBarItems: ISidebarItem[] = [
@@ -16,8 +16,8 @@ export const senderSideBarItems: ISidebarItem[] = [
       },
       {
         title: "Parcel Details",
-        url: "/sender/parcel-details",
-        component: ParcelDetails,
+        url: "/sender/ongoing-parcels",
+        component: onGoingParcel,
       },
       {
         title: "History",

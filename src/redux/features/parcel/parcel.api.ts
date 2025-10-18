@@ -18,7 +18,19 @@ export const parcelApi = baseApi.injectEndpoints({
       providesTags: ["PARCELS"],
       transformResponse: (response) => response.data,
     }),
+    trackParcel: builder.query({
+      query: (trackingId: string) => ({
+        url: `/parcels/track/${trackingId}`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
-export const { useGetAllParcelsQuery, useSendParcelMutation } = parcelApi;
+export const {
+  useGetAllParcelsQuery,
+  useSendParcelMutation,
+  useTrackParcelQuery,
+  useLazyTrackParcelQuery,
+} = parcelApi;

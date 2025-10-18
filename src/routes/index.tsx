@@ -14,6 +14,7 @@ import { adminSidebarItems } from "./adminsidebaritems";
 import { senderSideBarItems } from "./senderSideBarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import Unauthorized from "@/pages/Unauthorized";
+import TrackParcel from "@/pages/TrackParcel";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
 
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         Component: About,
         path: "about",
+      },
+      {
+        Component: TrackParcel,
+        path: "track/:trackingId?",
       },
     ],
   },
@@ -70,7 +75,6 @@ export const router = createBrowserRouter([
     Component: Verify,
     path: "verify",
   },
-
   {
     Component: Unauthorized,
     path: "/unauthorized",
