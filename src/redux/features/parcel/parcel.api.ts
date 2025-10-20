@@ -25,6 +25,14 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => response.data,
     }),
+    getMyParcels: builder.query({
+      query: () => ({
+        url: "/parcels/me",
+        method: "GET",
+      }),
+      providesTags: ["PARCELS"],
+      transformResponse: (response) => response.data,
+    }),
   }),
 });
 
@@ -33,4 +41,5 @@ export const {
   useSendParcelMutation,
   useTrackParcelQuery,
   useLazyTrackParcelQuery,
+  useGetMyParcelsQuery,
 } = parcelApi;

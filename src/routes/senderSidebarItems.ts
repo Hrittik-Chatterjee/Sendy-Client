@@ -15,7 +15,7 @@ export const senderSideBarItems: ISidebarItem[] = [
         component: SendParcel,
       },
       {
-        title: "Parcel Details",
+        title: "Ongoing Parcels",
         url: "/sender/ongoing-parcels",
         component: onGoingParcel,
       },

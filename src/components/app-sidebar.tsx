@@ -29,10 +29,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <div className="mx-auto">
+        <Link to={"/"} className="mx-auto">
           {" "}
           <Logo /> <span>Sendy</span>
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
