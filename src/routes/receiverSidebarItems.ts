@@ -3,7 +3,7 @@ import type { ISidebarItem } from "@/types";
 
 const IncomingParcels = lazy(() => import("@/pages/receiver/IncomingParcels"));
 const ConfirmDelivery = lazy(() => import("@/pages/receiver/ConfirmDelivery"));
-const DeliveryHistory = lazy(() => import("@/pages/receiver/DeliveryHistory"));
+const History = lazy(() => import("@/pages/sender/history"));
 
 export const receiverSidebarItems: ISidebarItem[] = [
   {
@@ -27,9 +27,9 @@ export const receiverSidebarItems: ISidebarItem[] = [
         component: ConfirmDelivery,
       },
       {
-        title: "Delivery History",
-        url: "/receiver/delivery-history",
-        component: DeliveryHistory,
+        title: "History",
+        url: "/receiver/history",
+        component: History,
       },
     ],
   },

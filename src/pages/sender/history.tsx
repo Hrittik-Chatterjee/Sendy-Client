@@ -65,6 +65,18 @@ const History = () => {
 
   console.log(myParcels);
 
+  // Filter parcels to show only cancelled or delivered ones
+  // For sent parcels: show both cancelled and delivered
+  // For received parcels: show only delivered (receivers cannot see cancelled parcels)
+  const filterHistoryParcels = (parcels: Parcel[], isSent: boolean) => {
+    return parcels.filter((parcel) => {
+      const status = parcel.currentStatus.toLowerCase();
+      if (status === "delivered") return true;
+      if (status === "cancelled" && isSent) return true;
+      return false;
+    });
+  };
+
   // Filter parcels based on search query
   const filterParcels = (parcels: Parcel[]) => {
     if (!searchQuery) return parcels;
@@ -82,8 +94,9 @@ const History = () => {
     );
   };
 
-  const sentParcels = filterParcels(myParcels?.sent || []);
-  const receivedParcels = filterParcels(myParcels?.received || []);
+  // First filter for history status, then apply search filter
+  const sentParcels = filterParcels(filterHistoryParcels(myParcels?.sent || [], true));
+  const receivedParcels = filterParcels(filterHistoryParcels(myParcels?.received || [], false));
   const activeParcels = activeTab === "sent" ? sentParcels : receivedParcels;
 
   // Get status color

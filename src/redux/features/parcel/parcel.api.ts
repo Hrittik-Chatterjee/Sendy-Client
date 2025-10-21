@@ -40,6 +40,13 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["PARCELS"],
     }),
+    confirmDelivery: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcels/${parcelId}/confirm-delivery`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["PARCELS"],
+    }),
   }),
 });
 
@@ -50,4 +57,5 @@ export const {
   useLazyTrackParcelQuery,
   useGetMyParcelsQuery,
   useCancelDeliveryMutation,
+  useConfirmDeliveryMutation,
 } = parcelApi;
