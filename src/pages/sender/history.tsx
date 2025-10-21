@@ -10,8 +10,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Package, MapPin, Weight, Calendar, Search, Truck } from "lucide-react";
+import { Package, MapPin, Weight, Calendar, Search, Truck, Clock, FileText } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+interface StatusLog {
+  status: string;
+  timestamp: string;
+  updatedBy: string;
+  location?: string;
+  note?: string;
+}
 
 interface Parcel {
   _id: string;
@@ -22,6 +38,7 @@ interface Parcel {
   weight: number;
   fee: number;
   createdAt: string;
+  statusLogs?: StatusLog[];
   receiverId?: {
     _id: string;
     name: string;
@@ -258,6 +275,95 @@ const History = () => {
                             {new Date(parcel.createdAt).toLocaleDateString()}
                           </p>
                         </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Status Log Button */}
+                      <div className="flex justify-end">
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="outline" size="sm">
+                              <FileText className="h-4 w-4 mr-2" />
+                              View Status Log
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+                            <SheetHeader>
+                              <SheetTitle>Status Log</SheetTitle>
+                              <SheetDescription>
+                                Track the complete history of this parcel
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="mt-6 space-y-4">
+                              {/* Parcel Info */}
+                              <Card>
+                                <CardHeader className="pb-3">
+                                  <CardTitle className="text-sm">Parcel Information</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-2 text-sm">
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Tracking ID:</span>
+                                    <span className="font-mono font-medium">{parcel.trackingId}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Current Status:</span>
+                                    <span className={`font-medium px-2 py-0.5 rounded-full text-xs ${getStatusColor(parcel.currentStatus)}`}>
+                                      {parcel.currentStatus}
+                                    </span>
+                                  </div>
+                                </CardContent>
+                              </Card>
+
+                              {/* Status History */}
+                              <div>
+                                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                                  <Clock className="h-4 w-4" />
+                                  Status History
+                                </h3>
+
+                                {parcel.statusLogs && parcel.statusLogs.length > 0 ? (
+                                  <div className="space-y-3 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
+                                    {parcel.statusLogs.map((log, index) => (
+                                      <div key={index} className="relative pl-8">
+                                        <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background" />
+                                        <Card>
+                                          <CardContent className="pt-4 space-y-2">
+                                            <div className="flex items-start justify-between gap-2">
+                                              <span className="font-medium text-sm">{log.status}</span>
+                                              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                                {new Date(log.timestamp).toLocaleString()}
+                                              </span>
+                                            </div>
+                                            {log.location && (
+                                              <p className="text-sm text-muted-foreground flex items-start gap-1">
+                                                <MapPin className="h-3 w-3 mt-0.5 flex-shrink-0" />
+                                                <span>{log.location}</span>
+                                              </p>
+                                            )}
+                                            {log.note && (
+                                              <p className="text-sm text-muted-foreground">
+                                                {log.note}
+                                              </p>
+                                            )}
+                                          </CardContent>
+                                        </Card>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <Card>
+                                    <CardContent className="py-8">
+                                      <p className="text-center text-sm text-muted-foreground">
+                                        No status history available
+                                      </p>
+                                    </CardContent>
+                                  </Card>
+                                )}
+                              </div>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
                       </div>
                     </CardContent>
                   </Card>

@@ -33,6 +33,13 @@ export const parcelApi = baseApi.injectEndpoints({
       providesTags: ["PARCELS"],
       transformResponse: (response) => response.data,
     }),
+    cancelDelivery: builder.mutation({
+      query: (parcelId: string) => ({
+        url: `/parcels/${parcelId}/cancel-delivery`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["PARCELS"],
+    }),
   }),
 });
 
@@ -42,4 +49,5 @@ export const {
   useTrackParcelQuery,
   useLazyTrackParcelQuery,
   useGetMyParcelsQuery,
+  useCancelDeliveryMutation,
 } = parcelApi;
