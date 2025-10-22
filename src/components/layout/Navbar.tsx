@@ -27,6 +27,7 @@ const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/track", label: "Track Parcel", role: "PUBLIC" },
+  { href: "/contact", label: "Contact us", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/admin", label: "Dashboard", role: role.superAdmin },
   { href: "/sender", label: "Dashboard", role: role.sender },
@@ -111,9 +112,15 @@ export default function Navbar() {
                 {navigationLinks.map((link, index) => {
                   // Track if we've already shown a dashboard
                   const isDashboard = link.label === "Dashboard";
-                  const dashboardAlreadyShown = isDashboard && navigationLinks
-                    .slice(0, index)
-                    .some(l => l.label === "Dashboard" && data?.data?.data?.roles?.includes(l.role));
+                  const dashboardAlreadyShown =
+                    isDashboard &&
+                    navigationLinks
+                      .slice(0, index)
+                      .some(
+                        (l) =>
+                          l.label === "Dashboard" &&
+                          data?.data?.data?.roles?.includes(l.role)
+                      );
 
                   return (
                     <>
@@ -127,16 +134,17 @@ export default function Navbar() {
                           </NavigationMenuLink>
                         </NavigationMenuItem>
                       )}
-                      {data?.data?.data?.roles?.includes(link.role) && !dashboardAlreadyShown && (
-                        <NavigationMenuItem key={index}>
-                          <NavigationMenuLink
-                            asChild
-                            className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                          >
-                            <Link to={link.href}>{link.label}</Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      )}
+                      {data?.data?.data?.roles?.includes(link.role) &&
+                        !dashboardAlreadyShown && (
+                          <NavigationMenuItem key={index}>
+                            <NavigationMenuLink
+                              asChild
+                              className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                            >
+                              <Link to={link.href}>{link.label}</Link>
+                            </NavigationMenuLink>
+                          </NavigationMenuItem>
+                        )}
                     </>
                   );
                 })}

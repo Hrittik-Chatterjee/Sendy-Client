@@ -2,6 +2,8 @@ import App from "@/App";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import About from "@/pages/About";
+import Home from "@/pages/Home";
+import Contact from "@/pages/Contact";
 
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -29,8 +31,16 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        index: true,
+        Component: Home,
+      },
+      {
         Component: About,
         path: "about",
+      },
+      {
+        Component: Contact,
+        path: "contact",
       },
       {
         Component: TrackParcel,
