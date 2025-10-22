@@ -31,11 +31,6 @@ export const adminSidebarItems: ISidebarItem[] = [
         url: "/admin/users",
         component: Users,
       },
-      {
-        title: "jabi",
-        url: "/admin/jabi",
-        component: Users,
-      },
     ],
   },
 ];

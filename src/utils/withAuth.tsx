@@ -5,10 +5,12 @@ import type { ComponentType } from "react";
 import { Navigate } from "react-router";
 
 const hasRoleAccess = (userRoles: TRole[], requiredRole: TRole): boolean => {
-  if (userRoles.includes("SUPER_ADMIN")) {
-    return true;
+  // If user has SUPER_ADMIN or ADMIN role, they can ONLY access admin routes
+  if (userRoles.includes("SUPER_ADMIN") || userRoles.includes("ADMIN")) {
+    return requiredRole === "ADMIN";
   }
 
+  // For non-admin users, check if they have the required role
   return userRoles.includes(requiredRole);
 };
 

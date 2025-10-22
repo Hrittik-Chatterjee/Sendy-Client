@@ -12,8 +12,8 @@ import Verify from "@/pages/Verify";
 import { createBrowserRouter, Navigate } from "react-router";
 
 import { generateRoutes } from "@/utils/generateRoutes";
-import { adminSidebarItems } from "./adminsidebaritems";
-import { senderSideBarItems } from "./senderSideBarItems";
+import { adminSidebarItems } from "./adminSidebarItems";
+import { senderSideBarItems } from "./senderSidebarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import Unauthorized from "@/pages/Unauthorized";
 import TrackParcel from "@/pages/TrackParcel";

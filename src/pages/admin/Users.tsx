@@ -352,21 +352,6 @@ const Users = () => {
                     />
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="password">
-                    New Password (leave blank to keep current)
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={editForm.password || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, password: e.target.value })
-                    }
-                    placeholder="Enter new password"
-                  />
-                </div>
               </div>
 
               {/* Roles */}
@@ -422,7 +407,8 @@ const Users = () => {
                     <Switch
                       id="isActive"
                       checked={
-                        (editForm.isActive ?? selectedUser.isActive) === "ACTIVE"
+                        (editForm.isActive ?? selectedUser.isActive) ===
+                        "ACTIVE"
                       }
                       onCheckedChange={(checked) =>
                         setEditForm({
