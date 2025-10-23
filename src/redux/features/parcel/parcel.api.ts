@@ -1,9 +1,14 @@
 import { baseApi } from "@/redux/baseApi";
-import type { IResponse } from "@/types";
+import type { IResponse, IPaginationMeta } from "@/types";
 
 interface IParcelResponse {
   message: string;
   data?: unknown;
+}
+
+interface IPaginatedResponse<T> {
+  data: T;
+  meta: IPaginationMeta;
 }
 
 export const parcelApi = baseApi.injectEndpoints({
@@ -16,13 +21,20 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["PARCELS"],
     }),
-    getAllParcels: builder.query({
-      query: () => ({
+    getAllParcels: builder.query<
+      IPaginatedResponse<unknown[]>,
+      { page?: number; limit?: number; currentStatus?: string } | void
+    >({
+      query: (params) => ({
         url: "/parcels",
         method: "GET",
+        params: params || {},
       }),
       providesTags: ["PARCELS"],
-      transformResponse: (response) => response.data,
+      transformResponse: (response: IResponse<unknown[]>) => ({
+        data: response.data || [],
+        meta: response.meta || { total: 0, page: 1, limit: 10, totalPages: 0 },
+      }),
     }),
     trackParcel: builder.query({
       query: (trackingId: string) => ({

@@ -43,9 +43,21 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import type { IUser, IUpdateUser, TRole } from "@/types";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const Users = () => {
-  const { data, isLoading, isError } = useGetAllUsersQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit] = useState(10);
+
+  const { data, isLoading, isError } = useGetAllUsersQuery({ page: currentPage, limit: pageLimit });
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,7 +66,8 @@ const Users = () => {
   const [editForm, setEditForm] = useState<IUpdateUser>({});
 
   const users = data?.data || [];
-  const totalUsers = data?.meta?.total || 0;
+  const meta = data?.meta;
+  const totalUsers = meta?.total || 0;
 
   // Filter users based on search query
   const filteredUsers = users.filter(
@@ -298,6 +311,76 @@ const Users = () => {
                   </div>
                 )}
               </>
+            )}
+
+            {/* Pagination */}
+            {!isLoading && !isError && meta && meta.totalPages > 1 && (
+              <div className="mt-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+
+                    {/* Page Numbers */}
+                    {Array.from({ length: meta.totalPages }, (_, i) => i + 1)
+                      .filter((page) => {
+                        // Show first page, last page, current page, and adjacent pages
+                        return (
+                          page === 1 ||
+                          page === meta.totalPages ||
+                          Math.abs(page - currentPage) <= 1
+                        );
+                      })
+                      .map((page, index, array) => {
+                        // Add ellipsis if there's a gap
+                        const prevPage = array[index - 1];
+                        const showEllipsis = prevPage && page - prevPage > 1;
+
+                        return (
+                          <div key={page} className="flex items-center">
+                            {showEllipsis && (
+                              <PaginationItem>
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            )}
+                            <PaginationItem>
+                              <PaginationLink
+                                onClick={() => setCurrentPage(page)}
+                                isActive={currentPage === page}
+                                className="cursor-pointer"
+                              >
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                          </div>
+                        );
+                      })}
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.min(meta.totalPages, prev + 1))
+                        }
+                        className={
+                          currentPage === meta.totalPages
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+
+                {/* Pagination Info */}
+                <div className="mt-2 text-center text-sm text-muted-foreground">
+                  Showing {((currentPage - 1) * pageLimit) + 1} to{" "}
+                  {Math.min(currentPage * pageLimit, meta.total)} of {meta.total} users
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>

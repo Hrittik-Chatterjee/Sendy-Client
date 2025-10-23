@@ -60,6 +60,15 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 type ParcelStatus =
   | "Requested"
@@ -111,11 +120,14 @@ const PARCEL_STATUSES: ParcelStatus[] = [
 ];
 
 const Parcels = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit] = useState(10);
+
   const {
-    data: parcels,
+    data: response,
     isLoading,
     isError,
-  } = useGetAllParcelsQuery(undefined);
+  } = useGetAllParcelsQuery({ page: currentPage, limit: pageLimit });
   const [updateParcel, { isLoading: isUpdating }] = useUpdateParcelMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -128,7 +140,8 @@ const Parcels = () => {
     note: "",
   });
 
-  const allParcels = (parcels || []) as Parcel[];
+  const allParcels = (response?.data || []) as Parcel[];
+  const meta = response?.meta;
 
   // Helper functions to get sender/receiver info
   const getSenderName = (parcel: Parcel) => {
@@ -443,6 +456,76 @@ const Parcels = () => {
                   </div>
                 )}
               </>
+            )}
+
+            {/* Pagination */}
+            {!isLoading && !isError && meta && meta.totalPages > 1 && (
+              <div className="mt-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+
+                    {/* Page Numbers */}
+                    {Array.from({ length: meta.totalPages }, (_, i) => i + 1)
+                      .filter((page) => {
+                        // Show first page, last page, current page, and adjacent pages
+                        return (
+                          page === 1 ||
+                          page === meta.totalPages ||
+                          Math.abs(page - currentPage) <= 1
+                        );
+                      })
+                      .map((page, index, array) => {
+                        // Add ellipsis if there's a gap
+                        const prevPage = array[index - 1];
+                        const showEllipsis = prevPage && page - prevPage > 1;
+
+                        return (
+                          <div key={page} className="flex items-center">
+                            {showEllipsis && (
+                              <PaginationItem>
+                                <PaginationEllipsis />
+                              </PaginationItem>
+                            )}
+                            <PaginationItem>
+                              <PaginationLink
+                                onClick={() => setCurrentPage(page)}
+                                isActive={currentPage === page}
+                                className="cursor-pointer"
+                              >
+                                {page}
+                              </PaginationLink>
+                            </PaginationItem>
+                          </div>
+                        );
+                      })}
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.min(meta.totalPages, prev + 1))
+                        }
+                        className={
+                          currentPage === meta.totalPages
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+
+                {/* Pagination Info */}
+                <div className="mt-2 text-center text-sm text-muted-foreground">
+                  Showing {((currentPage - 1) * pageLimit) + 1} to{" "}
+                  {Math.min(currentPage * pageLimit, meta.total)} of {meta.total} parcels
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>

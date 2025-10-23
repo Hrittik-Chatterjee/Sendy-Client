@@ -3,11 +3,19 @@ import type { ComponentType } from "react";
 export type { ISendOtp, IVerifyOtp, ILogin } from "./auth.type";
 export type { IUser, IUpdateUser, IGetAllUsersResponse } from "./user.type";
 
+export interface IPaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export interface IResponse<T> {
   statusCode: number;
   success: boolean;
   message: string;
   data: T;
+  meta?: IPaginationMeta;
 }
 
 export interface ISidebarItem {

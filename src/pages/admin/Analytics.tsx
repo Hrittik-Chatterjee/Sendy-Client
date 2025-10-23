@@ -52,14 +52,14 @@ interface Parcel {
 
 const Analytics = () => {
   const {
-    data: parcels,
+    data: response,
     isLoading,
     isError,
-  } = useGetAllParcelsQuery(undefined);
+  } = useGetAllParcelsQuery({ limit: 1000 }); // Get more parcels for analytics
 
   // Calculate analytics data
   const analyticsData = useMemo(() => {
-    const allParcels = (parcels || []) as Parcel[];
+    const allParcels = (response?.data || []) as Parcel[];
     const totalParcels = allParcels.length;
     const delivered = allParcels.filter(
       (p) => p.currentStatus === "Delivered"
@@ -121,7 +121,7 @@ const Analytics = () => {
       deliveryRate,
       totalRevenue,
     };
-  }, [parcels]);
+  }, [response]);
 
   const chartConfig = {
     delivered: {

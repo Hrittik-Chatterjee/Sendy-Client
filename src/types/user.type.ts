@@ -1,4 +1,4 @@
-import type { TRole } from "./index";
+import type { TRole, IPaginationMeta } from "./index";
 
 export interface IUser {
   _id: string;
@@ -31,8 +31,6 @@ export interface IGetAllUsersResponse {
   statusCode: number;
   success: boolean;
   message: string;
-  meta: {
-    total: number;
-  };
+  meta: IPaginationMeta;
   data: IUser[];
 }
