@@ -7,7 +7,7 @@ const History = lazy(() => import("@/pages/sender/history"));
 
 export const senderSideBarItems: ISidebarItem[] = [
   {
-    title: "Parcel Informations",
+    title: "Dashboard",
     items: [
       {
         title: "Send Parcel",

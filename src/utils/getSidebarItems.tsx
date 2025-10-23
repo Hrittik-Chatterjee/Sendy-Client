@@ -31,18 +31,24 @@ export const getSidebarItems = (userRoles: TRole | TRole[] | undefined) => {
     }
   });
 
-  // Flatten and merge items with same title
-  const mergedItems = new Map<string, ISidebarItem>();
+  // Flatten and merge items with same section title
+  const mergedSections = new Map<string, ISidebarItem>();
 
-  allItems.flat().forEach((item) => {
-    if (mergedItems.has(item.title)) {
-      // Merge items with same title
-      const existing = mergedItems.get(item.title)!;
-      existing.items = [...existing.items, ...item.items];
+  allItems.flat().forEach((section) => {
+    if (mergedSections.has(section.title)) {
+      // Merge sections with same title
+      const existing = mergedSections.get(section.title)!;
+
+      // Deduplicate items by title within the section
+      // Keep only the first occurrence of items with the same title
+      const existingTitles = new Set(existing.items.map((i) => i.title));
+      const newItems = section.items.filter((i) => !existingTitles.has(i.title));
+
+      existing.items = [...existing.items, ...newItems];
     } else {
-      mergedItems.set(item.title, { ...item });
+      mergedSections.set(section.title, { ...section });
     }
   });
 
-  return Array.from(mergedItems.values());
+  return Array.from(mergedSections.values());
 };

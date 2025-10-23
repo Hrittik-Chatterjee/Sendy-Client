@@ -1,4 +1,10 @@
 import { baseApi } from "@/redux/baseApi";
+import type { IResponse } from "@/types";
+
+interface IParcelResponse {
+  message: string;
+  data?: unknown;
+}
 
 export const parcelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,6 +53,17 @@ export const parcelApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["PARCELS"],
     }),
+    updateParcel: builder.mutation<
+      IResponse<IParcelResponse>,
+      { parcelId: string; payload: Record<string, unknown> }
+    >({
+      query: ({ parcelId, payload }) => ({
+        url: `/parcels/${parcelId}`,
+        method: "PATCH",
+        data: payload,
+      }),
+      invalidatesTags: ["PARCELS"],
+    }),
   }),
 });
 
@@ -58,4 +75,5 @@ export const {
   useGetMyParcelsQuery,
   useCancelDeliveryMutation,
   useConfirmDeliveryMutation,
+  useUpdateParcelMutation,
 } = parcelApi;

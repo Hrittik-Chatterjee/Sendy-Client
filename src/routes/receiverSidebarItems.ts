@@ -8,19 +8,12 @@ const History = lazy(() => import("@/pages/sender/history"));
 export const receiverSidebarItems: ISidebarItem[] = [
   {
     title: "Dashboard",
-
     items: [
       {
         title: "Incoming Parcels",
         url: "/receiver/incoming-parcels",
         component: IncomingParcels,
       },
-    ],
-  },
-  {
-    title: "Delivery",
-
-    items: [
       {
         title: "Confirm Delivery",
         url: "/receiver/confirm-delivery",
