@@ -1,15 +1,9 @@
 import { baseApi } from "@/redux/baseApi";
-import type { IResponse, IPaginationMeta } from "@/types";
-
-interface IParcelResponse {
-  message: string;
-  data?: unknown;
-}
-
-interface IPaginatedResponse<T> {
-  data: T;
-  meta: IPaginationMeta;
-}
+import type {
+  IResponse,
+  IPaginatedResponse,
+  IParcelResponse,
+} from "@/types";
 
 export const parcelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

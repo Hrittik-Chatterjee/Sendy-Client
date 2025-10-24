@@ -25,27 +25,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: string;
-  pickupAddress: string;
-  deliveryAddress: string;
-  weight: number;
-  fee: number;
-  createdAt: string;
-  receiverId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-}
-
-interface MyParcelsData {
-  sent: Parcel[];
-  received: Parcel[];
-}
+import type { IMyParcelsData } from "@/types";
 
 const OnGoingParcel = () => {
   const { data, isLoading, isError } = useGetMyParcelsQuery(undefined);
@@ -54,7 +34,7 @@ const OnGoingParcel = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [cancellingId, setCancellingId] = useState<string | null>(null);
 
-  const myParcels = data as MyParcelsData | undefined;
+  const myParcels = data as IMyParcelsData | undefined;
 
   // Filter only "Requested" status parcels from sent parcels
   const ongoingParcels = (myParcels?.sent || []).filter(
@@ -191,7 +171,7 @@ const OnGoingParcel = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {parcel.receiverId && (
+                            {parcel.receiverId && typeof parcel.receiverId === "object" && (
                               <span>
                                 To: {parcel.receiverId.name} (
                                 {parcel.receiverId.email})

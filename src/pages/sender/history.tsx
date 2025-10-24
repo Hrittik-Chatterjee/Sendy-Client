@@ -20,55 +20,21 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-interface StatusLog {
-  status: string;
-  timestamp: string;
-  updatedBy: string;
-  location?: string;
-  note?: string;
-}
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: string;
-  pickupAddress: string;
-  deliveryAddress: string;
-  weight: number;
-  fee: number;
-  createdAt: string;
-  statusLogs?: StatusLog[];
-  receiverId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-  senderId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-}
-
-interface MyParcelsData {
-  sent: Parcel[];
-  received: Parcel[];
-}
+import type { IMyParcelsData, IParcel } from "@/types";
 
 const History = () => {
   const { data, isLoading, isError } = useGetMyParcelsQuery(undefined);
   const [activeTab, setActiveTab] = useState<"sent" | "received">("sent");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const myParcels = data as MyParcelsData | undefined;
+  const myParcels = data as IMyParcelsData | undefined;
 
   console.log(myParcels);
 
   // Filter parcels to show only cancelled or delivered ones
   // For sent parcels: show both cancelled and delivered
   // For received parcels: show only delivered (receivers cannot see cancelled parcels)
-  const filterHistoryParcels = (parcels: Parcel[], isSent: boolean) => {
+  const filterHistoryParcels = (parcels: IParcel[], isSent: boolean) => {
     return parcels.filter((parcel) => {
       const status = parcel.currentStatus.toLowerCase();
       if (status === "delivered") return true;
@@ -78,7 +44,7 @@ const History = () => {
   };
 
   // Filter parcels based on search query
-  const filterParcels = (parcels: Parcel[]) => {
+  const filterParcels = (parcels: IParcel[]) => {
     if (!searchQuery) return parcels;
 
     return parcels.filter(
@@ -215,13 +181,13 @@ const History = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {activeTab === "sent" && parcel.receiverId && (
+                            {activeTab === "sent" && parcel.receiverId && typeof parcel.receiverId === "object" && (
                               <span>
                                 To: {parcel.receiverId.name} (
                                 {parcel.receiverId.email})
                               </span>
                             )}
-                            {activeTab === "received" && parcel.senderId && (
+                            {activeTab === "received" && parcel.senderId && typeof parcel.senderId === "object" && (
                               <span>
                                 From: {parcel.senderId.name} (
                                 {parcel.senderId.email})

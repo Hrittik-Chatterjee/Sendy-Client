@@ -20,50 +20,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-
-interface StatusLog {
-  status: string;
-  timestamp: string;
-  updatedBy: string;
-  location?: string;
-  note?: string;
-}
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: string;
-  pickupAddress: string;
-  deliveryAddress: string;
-  weight: number;
-  fee: number;
-  createdAt: string;
-  statusLogs?: StatusLog[];
-  receiverId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-  senderId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-}
-
-interface MyParcelsData {
-  sent: Parcel[];
-  received: Parcel[];
-}
+import type { IMyParcelsData, IParcel } from "@/types";
 
 const IncomingParcels = () => {
   const { data, isLoading, isError } = useGetMyParcelsQuery(undefined);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const myParcels = data as MyParcelsData | undefined;
+  const myParcels = data as IMyParcelsData | undefined;
 
   // Filter parcels to show only those with Approved, Dispatched, or In Transit status
-  const filterIncomingParcels = (parcels: Parcel[]) => {
+  const filterIncomingParcels = (parcels: IParcel[]) => {
     return parcels.filter((parcel) => {
       const status = parcel.currentStatus.toLowerCase();
       return (
@@ -75,7 +41,7 @@ const IncomingParcels = () => {
   };
 
   // Filter parcels based on search query
-  const filterParcels = (parcels: Parcel[]) => {
+  const filterParcels = (parcels: IParcel[]) => {
     if (!searchQuery) return parcels;
 
     return parcels.filter(
@@ -196,7 +162,7 @@ const IncomingParcels = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {parcel.senderId && (
+                            {parcel.senderId && typeof parcel.senderId === "object" && (
                               <span>
                                 From: {parcel.senderId.name} (
                                 {parcel.senderId.email})

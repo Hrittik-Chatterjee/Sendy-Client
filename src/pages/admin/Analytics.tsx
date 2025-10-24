@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useGetAllParcelsQuery } from "@/redux/features/parcel/parcel.api";
+import type { IParcel } from "@/types";
 import {
   Card,
   CardContent,
@@ -33,23 +34,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-type ParcelStatus =
-  | "Requested"
-  | "Approved"
-  | "Dispatched"
-  | "In Transit"
-  | "Delivered"
-  | "Cancelled";
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: ParcelStatus;
-  createdAt: string;
-  weight: number;
-  fee: number;
-}
-
 const Analytics = () => {
   const {
     data: response,
@@ -59,7 +43,7 @@ const Analytics = () => {
 
   // Calculate analytics data
   const analyticsData = useMemo(() => {
-    const allParcels = (response?.data || []) as Parcel[];
+    const allParcels = (response?.data || []) as IParcel[];
     const totalParcels = allParcels.length;
     const delivered = allParcels.filter(
       (p) => p.currentStatus === "Delivered"
@@ -335,7 +319,10 @@ const Analytics = () => {
                     data={analyticsData.monthlyShipments}
                     margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      className="stroke-muted"
+                    />
                     <XAxis
                       dataKey="month"
                       tick={{ fill: "hsl(var(--foreground))", fontSize: 11 }}

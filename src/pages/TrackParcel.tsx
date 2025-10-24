@@ -13,14 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Package, MapPin, Weight, Truck } from "lucide-react";
-
-interface StatusLog {
-  status: string;
-  timestamp: string;
-  updatedBy: string;
-  location?: string;
-  note?: string;
-}
+import type { IStatusLog } from "@/types";
 
 const TrackParcel = () => {
   const { trackingId: urlTrackingId } = useParams<{ trackingId: string }>();
@@ -202,30 +195,32 @@ const TrackParcel = () => {
                       Status History
                     </h3>
                     <div className="space-y-3">
-                      {parcelData.statusLogs.map((log: StatusLog, index: number) => (
-                        <div
-                          key={index}
-                          className="border rounded-lg p-3 space-y-1"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">{log.status}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(log.timestamp).toLocaleString()}
-                            </span>
+                      {parcelData.statusLogs.map(
+                        (log: IStatusLog, index: number) => (
+                          <div
+                            key={index}
+                            className="border rounded-lg p-3 space-y-1"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium">{log.status}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(log.timestamp).toLocaleString()}
+                              </span>
+                            </div>
+                            {log.location && (
+                              <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {log.location}
+                              </p>
+                            )}
+                            {log.note && (
+                              <p className="text-sm text-muted-foreground">
+                                {log.note}
+                              </p>
+                            )}
                           </div>
-                          {log.location && (
-                            <p className="text-sm text-muted-foreground flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {log.location}
-                            </p>
-                          )}
-                          {log.note && (
-                            <p className="text-sm text-muted-foreground">
-                              {log.note}
-                            </p>
-                          )}
-                        </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   </div>
                 </>

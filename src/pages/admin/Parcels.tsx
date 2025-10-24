@@ -60,6 +60,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
+import type { IParcel, TParcelStatus, IStatusLog } from "@/types";
 import {
   Pagination,
   PaginationContent,
@@ -70,47 +71,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-type ParcelStatus =
-  | "Requested"
-  | "Approved"
-  | "Dispatched"
-  | "In Transit"
-  | "Delivered"
-  | "Cancelled";
-
-interface StatusLog {
-  status: ParcelStatus;
-  timestamp: string;
-  updatedBy?: string;
-  location?: string;
-  note?: string;
-}
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: ParcelStatus;
-  pickupAddress: string;
-  deliveryAddress: string;
-  weight: number;
-  fee: number;
-  createdAt: string;
-  updatedAt: string;
-  isBlocked?: boolean;
-  statusLogs?: StatusLog[];
-  receiverId?: string | {
-    _id: string;
-    name: string;
-    email: string;
-  };
-  senderId?: string | {
-    _id: string;
-    name: string;
-    email: string;
-  };
-}
-
-const PARCEL_STATUSES: ParcelStatus[] = [
+const PARCEL_STATUSES: TParcelStatus[] = [
   "Requested",
   "Approved",
   "Dispatched",
@@ -133,35 +94,35 @@ const Parcels = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
-  const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
+  const [selectedParcel, setSelectedParcel] = useState<IParcel | null>(null);
   const [statusForm, setStatusForm] = useState({
     status: "",
     location: "",
     note: "",
   });
 
-  const allParcels = (response?.data || []) as Parcel[];
+  const allParcels = (response?.data || []) as IParcel[];
   const meta = response?.meta;
 
   // Helper functions to get sender/receiver info
-  const getSenderName = (parcel: Parcel) => {
+  const getSenderName = (parcel: IParcel) => {
     if (!parcel.senderId) return "N/A";
     if (typeof parcel.senderId === "string") return parcel.senderId.substring(0, 8) + "...";
     return parcel.senderId.name;
   };
 
-  const getSenderEmail = (parcel: Parcel) => {
+  const getSenderEmail = (parcel: IParcel) => {
     if (!parcel.senderId || typeof parcel.senderId === "string") return "N/A";
     return parcel.senderId.email;
   };
 
-  const getReceiverName = (parcel: Parcel) => {
+  const getReceiverName = (parcel: IParcel) => {
     if (!parcel.receiverId) return "N/A";
     if (typeof parcel.receiverId === "string") return parcel.receiverId.substring(0, 8) + "...";
     return parcel.receiverId.name;
   };
 
-  const getReceiverEmail = (parcel: Parcel) => {
+  const getReceiverEmail = (parcel: IParcel) => {
     if (!parcel.receiverId || typeof parcel.receiverId === "string") return "N/A";
     return parcel.receiverId.email;
   };
@@ -178,7 +139,7 @@ const Parcels = () => {
     );
   });
 
-  const handleUpdateStatusClick = (parcel: Parcel) => {
+  const handleUpdateStatusClick = (parcel: IParcel) => {
     setSelectedParcel(parcel);
     setStatusForm({
       status: parcel.currentStatus,
@@ -188,7 +149,7 @@ const Parcels = () => {
     setStatusDialogOpen(true);
   };
 
-  const handleViewClick = (parcel: Parcel) => {
+  const handleViewClick = (parcel: IParcel) => {
     setSelectedParcel(parcel);
     setViewDialogOpen(true);
   };
@@ -203,8 +164,8 @@ const Parcels = () => {
       };
 
       // Add status logs with location and note if provided
-      const newStatusLog: Partial<StatusLog> = {
-        status: statusForm.status as ParcelStatus,
+      const newStatusLog: Partial<IStatusLog> = {
+        status: statusForm.status as TParcelStatus,
         timestamp: new Date().toISOString(),
       };
 
@@ -242,7 +203,7 @@ const Parcels = () => {
     }
   };
 
-  const handleBlockToggle = async (parcel: Parcel) => {
+  const handleBlockToggle = async (parcel: IParcel) => {
     try {
       const payload: Record<string, unknown> = {
         isBlocked: !parcel.isBlocked,
@@ -267,7 +228,7 @@ const Parcels = () => {
     }
   };
 
-  const getStatusColor = (status: ParcelStatus) => {
+  const getStatusColor = (status: TParcelStatus) => {
     switch (status) {
       case "Delivered":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";

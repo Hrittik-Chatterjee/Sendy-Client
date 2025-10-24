@@ -25,27 +25,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-
-interface Parcel {
-  _id: string;
-  trackingId: string;
-  currentStatus: string;
-  pickupAddress: string;
-  deliveryAddress: string;
-  weight: number;
-  fee: number;
-  createdAt: string;
-  senderId?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-}
-
-interface MyParcelsData {
-  sent: Parcel[];
-  received: Parcel[];
-}
+import type { IMyParcelsData } from "@/types";
 
 const ConfirmDelivery = () => {
   const { data, isLoading, isError } = useGetMyParcelsQuery(undefined);
@@ -54,7 +34,7 @@ const ConfirmDelivery = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
-  const myParcels = data as MyParcelsData | undefined;
+  const myParcels = data as IMyParcelsData | undefined;
 
   // Filter only "In Transit" status parcels from received parcels
   const inTransitParcels = (myParcels?.received || []).filter(
@@ -196,7 +176,7 @@ const ConfirmDelivery = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {parcel.senderId && (
+                            {parcel.senderId && typeof parcel.senderId === "object" && (
                               <span>
                                 From: {parcel.senderId.name} (
                                 {parcel.senderId.email})
