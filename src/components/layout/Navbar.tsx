@@ -110,7 +110,6 @@ export default function Navbar() {
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => {
-                  // Track if we've already shown a dashboard
                   const isDashboard = link.label === "Dashboard";
                   const dashboardAlreadyShown =
                     isDashboard &&

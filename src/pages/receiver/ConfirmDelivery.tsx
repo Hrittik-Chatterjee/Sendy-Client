@@ -66,8 +66,8 @@ const ConfirmDelivery = () => {
       });
     } catch (error) {
       console.error("Error confirming delivery:", error);
-      const errorMessage =
-        (error as { data?: { message?: string } })?.data?.message;
+      const errorMessage = (error as { data?: { message?: string } })?.data
+        ?.message;
       toast.error("Failed to confirm delivery", {
         description: errorMessage || "Something went wrong. Please try again.",
       });
@@ -176,12 +176,13 @@ const ConfirmDelivery = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {parcel.senderId && typeof parcel.senderId === "object" && (
-                              <span>
-                                From: {parcel.senderId.name} (
-                                {parcel.senderId.email})
-                              </span>
-                            )}
+                            {parcel.senderId &&
+                              typeof parcel.senderId === "object" && (
+                                <span>
+                                  From: {parcel.senderId.name} (
+                                  {parcel.senderId.email})
+                                </span>
+                              )}
                           </CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
@@ -248,9 +249,7 @@ const ConfirmDelivery = () => {
                           variant="default"
                           size="sm"
                           onClick={() => handleConfirmDelivery(parcel._id)}
-                          disabled={
-                            isConfirming && confirmingId === parcel._id
-                          }
+                          disabled={isConfirming && confirmingId === parcel._id}
                           className="ml-4 bg-green-600 hover:bg-green-700"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />

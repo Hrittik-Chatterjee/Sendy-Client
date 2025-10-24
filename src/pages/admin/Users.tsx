@@ -57,7 +57,10 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit] = useState(10);
 
-  const { data, isLoading, isError } = useGetAllUsersQuery({ page: currentPage, limit: pageLimit });
+  const { data, isLoading, isError } = useGetAllUsersQuery({
+    page: currentPage,
+    limit: pageLimit,
+  });
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -320,8 +323,14 @@ const Users = () => {
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(1, prev - 1))
+                        }
+                        className={
+                          currentPage === 1
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
                       />
                     </PaginationItem>
 
@@ -336,7 +345,6 @@ const Users = () => {
                         );
                       })
                       .map((page, index, array) => {
-                        // Add ellipsis if there's a gap
                         const prevPage = array[index - 1];
                         const showEllipsis = prevPage && page - prevPage > 1;
 
@@ -363,7 +371,9 @@ const Users = () => {
                     <PaginationItem>
                       <PaginationNext
                         onClick={() =>
-                          setCurrentPage((prev) => Math.min(meta.totalPages, prev + 1))
+                          setCurrentPage((prev) =>
+                            Math.min(meta.totalPages, prev + 1)
+                          )
                         }
                         className={
                           currentPage === meta.totalPages
@@ -377,8 +387,9 @@ const Users = () => {
 
                 {/* Pagination Info */}
                 <div className="mt-2 text-center text-sm text-muted-foreground">
-                  Showing {((currentPage - 1) * pageLimit) + 1} to{" "}
-                  {Math.min(currentPage * pageLimit, meta.total)} of {meta.total} users
+                  Showing {(currentPage - 1) * pageLimit + 1} to{" "}
+                  {Math.min(currentPage * pageLimit, meta.total)} of{" "}
+                  {meta.total} users
                 </div>
               </div>
             )}

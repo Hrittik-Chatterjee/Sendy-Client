@@ -102,7 +102,10 @@ const About = () => {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="text-center hover:shadow-lg transition-shadow"
+              >
                 <CardContent className="pt-6 space-y-2">
                   <Icon className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
                   <p className="text-2xl md:text-3xl font-bold">{stat.value}</p>
@@ -119,7 +122,9 @@ const About = () => {
       {/* Features Section */}
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Why Choose Sendy?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Why Choose Sendy?
+          </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             We provide comprehensive parcel delivery solutions tailored to meet
             your needs
@@ -138,7 +143,9 @@ const About = () => {
                   <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-lg md:text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-lg md:text-xl">
+                    {feature.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-sm md:text-base">
@@ -154,7 +161,9 @@ const About = () => {
       {/* Values Section */}
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">Our Core Values</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            Our Core Values
+          </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Principles that guide everything we do
           </p>
@@ -170,7 +179,9 @@ const About = () => {
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <Icon className="h-5 w-5 text-primary" />
                     </div>
-                    <CardTitle className="text-lg md:text-xl">{value.title}</CardTitle>
+                    <CardTitle className="text-lg md:text-xl">
+                      {value.title}
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -188,14 +199,16 @@ const About = () => {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <Card className="max-w-4xl mx-auto">
           <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl text-center">Our Story</CardTitle>
+            <CardTitle className="text-2xl md:text-3xl text-center">
+              Our Story
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 md:space-y-6 text-sm md:text-base">
             <p className="text-muted-foreground leading-relaxed">
-              Sendy was founded with a simple yet powerful vision: to make parcel
-              delivery accessible, reliable, and stress-free for everyone. What
-              started as a small local delivery service has grown into a trusted
-              logistics partner serving thousands of customers.
+              Sendy was founded with a simple yet powerful vision: to make
+              parcel delivery accessible, reliable, and stress-free for
+              everyone. What started as a small local delivery service has grown
+              into a trusted logistics partner serving thousands of customers.
             </p>
 
             <Separator />
@@ -204,51 +217,24 @@ const About = () => {
               <h3 className="font-semibold text-lg md:text-xl">What We Do</h3>
               <p className="text-muted-foreground leading-relaxed">
                 We specialize in providing end-to-end parcel delivery solutions
-                for individuals and businesses. Our platform allows you to easily
-                send and track parcels, manage deliveries, and ensure your items
-                reach their destination safely and on time.
+                for individuals and businesses. Our platform allows you to
+                easily send and track parcels, manage deliveries, and ensure
+                your items reach their destination safely and on time.
               </p>
             </div>
 
             <Separator />
 
             <div className="space-y-3 md:space-y-4">
-              <h3 className="font-semibold text-lg md:text-xl">Our Commitment</h3>
+              <h3 className="font-semibold text-lg md:text-xl">
+                Our Commitment
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
                 We're committed to continuous improvement and innovation. By
                 investing in technology and training our team, we ensure that
-                every parcel receives the attention it deserves. Your trust is our
-                most valuable asset, and we work hard every day to earn it.
+                every parcel receives the attention it deserves. Your trust is
+                our most valuable asset, and we work hard every day to earn it.
               </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* CTA Section */}
-      <div className="container mx-auto px-4 py-12 md:py-16">
-        <Card className="max-w-3xl mx-auto bg-primary text-primary-foreground">
-          <CardContent className="py-8 md:py-12 text-center space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold">
-              Ready to Send Your Parcel?
-            </h2>
-            <p className="text-sm md:text-base opacity-90">
-              Join thousands of satisfied customers who trust Sendy for their
-              delivery needs
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-              <a
-                href="/send-parcel"
-                className="inline-flex items-center justify-center rounded-md bg-background text-foreground px-6 py-3 font-medium hover:bg-background/90 transition-colors"
-              >
-                Send a Parcel
-              </a>
-              <a
-                href="/track"
-                className="inline-flex items-center justify-center rounded-md border border-primary-foreground/20 bg-transparent px-6 py-3 font-medium hover:bg-primary-foreground/10 transition-colors"
-              >
-                Track Parcel
-              </a>
             </div>
           </CardContent>
         </Card>

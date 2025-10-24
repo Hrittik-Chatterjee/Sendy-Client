@@ -65,7 +65,6 @@ export function LoginForm({
     } catch (error: any) {
       console.error(error);
 
-      // Check if the error message specifically indicates unverified account
       const errorMessage = error?.data?.message || "";
       const isUnverified =
         errorMessage.toLowerCase().includes("verify") ||

@@ -16,7 +16,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSendParcelMutation } from "@/redux/features/parcel/parcel.api";
 import { toast } from "sonner";
 
-// Zod schema for form validation
 const sendParcelSchema = z.object({
   receiverId: z
     .string()
@@ -56,13 +55,15 @@ const SendParcel = () => {
     try {
       const response = await sendParcel(data).unwrap();
       toast.success("Parcel sent successfully!", {
-        description: "Your parcel has been registered and will be processed shortly.",
+        description:
+          "Your parcel has been registered and will be processed shortly.",
       });
       form.reset();
       console.log("Success:", response);
     } catch (error) {
       console.error("Error creating parcel:", error);
-      const errorMessage = (error as { data?: { message?: string } })?.data?.message;
+      const errorMessage = (error as { data?: { message?: string } })?.data
+        ?.message;
       toast.error("Failed to send parcel", {
         description: errorMessage || "Something went wrong. Please try again.",
       });

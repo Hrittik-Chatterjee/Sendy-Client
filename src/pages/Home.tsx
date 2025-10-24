@@ -37,22 +37,26 @@ const Home = () => {
     {
       icon: Clock,
       title: "Fast Delivery",
-      description: "Express shipping options to get your parcels delivered quickly and efficiently.",
+      description:
+        "Express shipping options to get your parcels delivered quickly and efficiently.",
     },
     {
       icon: Shield,
       title: "Secure & Safe",
-      description: "Your parcels are insured and handled with maximum care throughout delivery.",
+      description:
+        "Your parcels are insured and handled with maximum care throughout delivery.",
     },
     {
       icon: MapPin,
       title: "Real-time Tracking",
-      description: "Track your parcel's journey in real-time from pickup to delivery.",
+      description:
+        "Track your parcel's journey in real-time from pickup to delivery.",
     },
     {
       icon: Package,
       title: "Easy Booking",
-      description: "Simple and intuitive booking process to send your parcels hassle-free.",
+      description:
+        "Simple and intuitive booking process to send your parcels hassle-free.",
     },
   ];
 
@@ -301,7 +305,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <Card className="max-w-4xl mx-auto bg-gradient-to-br from-primary to-primary/80 text-primary-foreground border-0">

@@ -79,7 +79,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Office",
-      details: "123 Delivery Street, City, ST 12345",
+      details: "Sylhet, City, ST 12345",
       subtitle: "Visit our office",
     },
     {
@@ -175,7 +175,7 @@ const Contact = () => {
                       <Input
                         id="name"
                         name="name"
-                        placeholder="John Doe"
+                        placeholder="H c"
                         value={formData.name}
                         onChange={handleChange}
                         required
@@ -188,7 +188,7 @@ const Contact = () => {
                         id="email"
                         name="email"
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder="example@mail.com"
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -204,7 +204,7 @@ const Contact = () => {
                         id="phone"
                         name="phone"
                         type="tel"
-                        placeholder="+1 (555) 123-4567"
+                        placeholder="+88xxxxxxxx"
                         value={formData.phone}
                         onChange={handleChange}
                         disabled={isSubmitting || isSubmitted}
@@ -319,22 +319,6 @@ const Contact = () => {
             </Card>
           </div>
         </div>
-      </div>
-
-      <div className="container mx-auto px-4 pb-12 md:pb-16">
-        <Card className="overflow-hidden">
-          <div className="bg-muted/50 h-64 md:h-80 flex items-center justify-center">
-            <div className="text-center space-y-2">
-              <MapPin className="h-12 w-12 mx-auto text-muted-foreground" />
-              <p className="text-muted-foreground font-medium">
-                Map Placeholder
-              </p>
-              <p className="text-sm text-muted-foreground max-w-xs mx-auto px-4">
-                123 Delivery Street, City, ST 12345
-              </p>
-            </div>
-          </div>
-        </Card>
       </div>
     </div>
   );

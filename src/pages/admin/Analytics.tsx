@@ -59,7 +59,7 @@ const Analytics = () => {
       (p) => p.currentStatus === "Cancelled"
     ).length;
 
-    // Status distribution for pie chart
+    // status distribution
     const statusDistribution = [
       { name: "Delivered", value: delivered, color: "#22c55e" },
       { name: "In Transit", value: inTransit, color: "#f97316" },
@@ -67,7 +67,7 @@ const Analytics = () => {
       { name: "Cancelled", value: cancelled, color: "#ef4444" },
     ].filter((item) => item.value > 0);
 
-    // Monthly shipments for bar chart
+    // Monthly shipments
     const monthlyData: Record<string, number> = {};
     allParcels.forEach((parcel) => {
       const date = new Date(parcel.createdAt);
@@ -85,9 +85,9 @@ const Analytics = () => {
         const dateB = new Date(b.month);
         return dateA.getTime() - dateB.getTime();
       })
-      .slice(-6); // Last 6 months
+      .slice(-6);
 
-    // Calculate delivery rate
+    // Calculate delivery price
     const deliveryRate =
       totalParcels > 0 ? ((delivered / totalParcels) * 100).toFixed(1) : "0";
 
@@ -254,7 +254,7 @@ const Analytics = () => {
 
       {/* Charts Section */}
       <div className="grid gap-4 md:grid-cols-2">
-        {/* Status Distribution Pie Chart */}
+        {/* Status Distribution  Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Delivery Status Distribution</CardTitle>
@@ -297,7 +297,7 @@ const Analytics = () => {
           </CardContent>
         </Card>
 
-        {/* Monthly Shipments Bar Chart */}
+        {/* Monthly Shipments  Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Monthly Shipments</CardTitle>
@@ -348,7 +348,7 @@ const Analytics = () => {
         </Card>
       </div>
 
-      {/* Additional Stats */}
+      {/* more Stats */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">

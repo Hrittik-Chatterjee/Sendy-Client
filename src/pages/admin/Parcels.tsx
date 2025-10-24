@@ -107,7 +107,8 @@ const Parcels = () => {
   // Helper functions to get sender/receiver info
   const getSenderName = (parcel: IParcel) => {
     if (!parcel.senderId) return "N/A";
-    if (typeof parcel.senderId === "string") return parcel.senderId.substring(0, 8) + "...";
+    if (typeof parcel.senderId === "string")
+      return parcel.senderId.substring(0, 8) + "...";
     return parcel.senderId.name;
   };
 
@@ -118,16 +119,18 @@ const Parcels = () => {
 
   const getReceiverName = (parcel: IParcel) => {
     if (!parcel.receiverId) return "N/A";
-    if (typeof parcel.receiverId === "string") return parcel.receiverId.substring(0, 8) + "...";
+    if (typeof parcel.receiverId === "string")
+      return parcel.receiverId.substring(0, 8) + "...";
     return parcel.receiverId.name;
   };
 
   const getReceiverEmail = (parcel: IParcel) => {
-    if (!parcel.receiverId || typeof parcel.receiverId === "string") return "N/A";
+    if (!parcel.receiverId || typeof parcel.receiverId === "string")
+      return "N/A";
     return parcel.receiverId.email;
   };
 
-  // Filter parcels based on search query
+  // filter parcels based on search query
   const filteredParcels = allParcels.filter((parcel) => {
     const senderName = getSenderName(parcel);
     const receiverName = getReceiverName(parcel);
@@ -177,7 +180,7 @@ const Parcels = () => {
         newStatusLog.note = statusForm.note;
       }
 
-      // Only add to statusLogs if location or note is provided
+      // only add to statusLogs if location or note is provided
       if (statusForm.location || statusForm.note) {
         payload.statusLogs = [
           ...(selectedParcel.statusLogs || []),
@@ -426,15 +429,19 @@ const Parcels = () => {
                   <PaginationContent>
                     <PaginationItem>
                       <PaginationPrevious
-                        onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(1, prev - 1))
+                        }
+                        className={
+                          currentPage === 1
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
                       />
                     </PaginationItem>
 
-                    {/* Page Numbers */}
                     {Array.from({ length: meta.totalPages }, (_, i) => i + 1)
                       .filter((page) => {
-                        // Show first page, last page, current page, and adjacent pages
                         return (
                           page === 1 ||
                           page === meta.totalPages ||
@@ -442,7 +449,6 @@ const Parcels = () => {
                         );
                       })
                       .map((page, index, array) => {
-                        // Add ellipsis if there's a gap
                         const prevPage = array[index - 1];
                         const showEllipsis = prevPage && page - prevPage > 1;
 
@@ -469,7 +475,9 @@ const Parcels = () => {
                     <PaginationItem>
                       <PaginationNext
                         onClick={() =>
-                          setCurrentPage((prev) => Math.min(meta.totalPages, prev + 1))
+                          setCurrentPage((prev) =>
+                            Math.min(meta.totalPages, prev + 1)
+                          )
                         }
                         className={
                           currentPage === meta.totalPages
@@ -481,10 +489,10 @@ const Parcels = () => {
                   </PaginationContent>
                 </Pagination>
 
-                {/* Pagination Info */}
                 <div className="mt-2 text-center text-sm text-muted-foreground">
-                  Showing {((currentPage - 1) * pageLimit) + 1} to{" "}
-                  {Math.min(currentPage * pageLimit, meta.total)} of {meta.total} parcels
+                  Showing {(currentPage - 1) * pageLimit + 1} to{" "}
+                  {Math.min(currentPage * pageLimit, meta.total)} of{" "}
+                  {meta.total} parcels
                 </div>
               </div>
             )}
@@ -492,7 +500,6 @@ const Parcels = () => {
         </Card>
       </div>
 
-      {/* Update Status Dialog */}
       <Dialog open={statusDialogOpen} onOpenChange={setStatusDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -574,7 +581,6 @@ const Parcels = () => {
         </DialogContent>
       </Dialog>
 
-      {/* View Parcel Details Sheet */}
       <Sheet open={viewDialogOpen} onOpenChange={setViewDialogOpen}>
         <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
           <SheetHeader>

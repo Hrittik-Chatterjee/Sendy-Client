@@ -229,7 +229,7 @@ const TrackParcel = () => {
           </Card>
         )}
 
-        {/* Back to Home Link */}
+        {/* Home Link */}
         <div className="text-center">
           <Button variant="ghost" onClick={() => navigate("/")}>
             ← Back to Home
