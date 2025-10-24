@@ -116,13 +116,38 @@ export default function Navbar() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink asChild className="py-1.5">
-                        <Link to={link.href}>{link.label} </Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))}
+                  {navigationLinks.map((link, index) => {
+                    const isDashboard = link.label === "Dashboard";
+                    const dashboardAlreadyShown =
+                      isDashboard &&
+                      navigationLinks
+                        .slice(0, index)
+                        .some(
+                          (l) =>
+                            l.label === "Dashboard" &&
+                            data?.data?.data?.roles?.includes(l.role)
+                        );
+
+                    return (
+                      <>
+                        {link.role === "PUBLIC" && (
+                          <NavigationMenuItem key={index} className="w-full">
+                            <NavigationMenuLink asChild className="py-1.5">
+                              <Link to={link.href}>{link.label} </Link>
+                            </NavigationMenuLink>
+                          </NavigationMenuItem>
+                        )}
+                        {data?.data?.data?.roles?.includes(link.role) &&
+                          !dashboardAlreadyShown && (
+                            <NavigationMenuItem key={index} className="w-full">
+                              <NavigationMenuLink asChild className="py-1.5">
+                                <Link to={link.href}>{link.label} </Link>
+                              </NavigationMenuLink>
+                            </NavigationMenuItem>
+                          )}
+                      </>
+                    );
+                  })}
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
