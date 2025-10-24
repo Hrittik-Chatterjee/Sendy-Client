@@ -335,14 +335,14 @@ const Parcels = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Tracking ID</TableHead>
-                          <TableHead>Sender</TableHead>
-                          <TableHead>Receiver</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Weight</TableHead>
-                          <TableHead>Fee</TableHead>
-                          <TableHead>Created</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead className="min-w-[120px]">Tracking ID</TableHead>
+                          <TableHead className="min-w-[100px]">Sender</TableHead>
+                          <TableHead className="min-w-[100px]">Receiver</TableHead>
+                          <TableHead className="min-w-[100px]">Status</TableHead>
+                          <TableHead className="min-w-[80px]">Weight</TableHead>
+                          <TableHead className="min-w-[70px]">Fee</TableHead>
+                          <TableHead className="min-w-[100px]">Created</TableHead>
+                          <TableHead className="text-right min-w-[120px]">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -382,28 +382,34 @@ const Parcels = () => {
                               {new Date(parcel.createdAt).toLocaleDateString()}
                             </TableCell>
                             <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-2">
+                              <div className="flex items-center justify-end gap-1">
                                 <Button
                                   variant="ghost"
-                                  size="sm"
+                                  size="icon"
+                                  className="h-8 w-8"
                                   onClick={() => handleViewClick(parcel)}
+                                  title="View details"
                                 >
                                   <Eye className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
-                                  size="sm"
+                                  size="icon"
+                                  className="h-8 w-8"
                                   onClick={() =>
                                     handleUpdateStatusClick(parcel)
                                   }
+                                  title="Update status"
                                 >
                                   <Edit className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
-                                  size="sm"
+                                  size="icon"
+                                  className="h-8 w-8"
                                   onClick={() => handleBlockToggle(parcel)}
                                   disabled={isUpdating}
+                                  title={parcel.isBlocked ? "Unblock" : "Block"}
                                 >
                                   {parcel.isBlocked ? (
                                     <Unlock className="h-4 w-4" />

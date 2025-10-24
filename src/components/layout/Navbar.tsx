@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   authApi,
   useLogoutMutation,
@@ -21,6 +21,7 @@ import { useAppDispatch } from "@/redux/hook";
 import { ModeToggle } from "./mode.toggle";
 import { Logo } from "@/assets/icons/Logo";
 import { role } from "@/constants/role";
+import { toast } from "sonner";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -36,15 +37,40 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
-  const [logout] = useLogoutMutation();
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
   const dispatch = useAppDispatch();
-  console.log(data?.data?.data?.email);
-  console.log(data?.data?.data?.roles);
-  console.log(data);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await logout(undefined);
-    dispatch(authApi.util.resetApiState());
+    try {
+      // Call logout API
+      await logout(undefined).unwrap();
+
+      // Reset Redux state
+      dispatch(authApi.util.resetApiState());
+
+      // Clear any localStorage/sessionStorage if used
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Show success message
+      toast.success("Logged out successfully!", {
+        description: "You have been logged out. Come back soon!",
+        position: "top-center",
+      });
+
+      // Navigate to home page
+      navigate("/", { replace: true });
+
+      // Force reload to clear any cached data
+      window.location.reload();
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Logout failed", {
+        description: "There was an error logging you out. Please try again.",
+        position: "top-center",
+      });
+    }
   };
 
   return (
@@ -159,8 +185,9 @@ export default function Navbar() {
               onClick={handleLogout}
               variant="outline"
               className="text-sm"
+              disabled={isLoggingOut}
             >
-              Logout
+              {isLoggingOut ? "Logging out..." : "Logout"}
             </Button>
           )}
           {!data?.data?.data?.email && (

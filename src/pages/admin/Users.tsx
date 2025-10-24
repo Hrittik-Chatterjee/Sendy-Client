@@ -237,13 +237,13 @@ const Users = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Email</TableHead>
-                          <TableHead>Roles</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Verified</TableHead>
-                          <TableHead>Joined</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead className="min-w-[120px]">Name</TableHead>
+                          <TableHead className="min-w-[180px]">Email</TableHead>
+                          <TableHead className="min-w-[150px]">Roles</TableHead>
+                          <TableHead className="min-w-[100px]">Status</TableHead>
+                          <TableHead className="min-w-[80px]">Verified</TableHead>
+                          <TableHead className="min-w-[100px]">Joined</TableHead>
+                          <TableHead className="text-right min-w-[100px]">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -302,9 +302,10 @@ const Users = () => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => handleEditClick(user)}
+                                className="whitespace-nowrap"
                               >
-                                <Edit className="h-4 w-4 mr-1" />
-                                Edit
+                                <Edit className="h-4 w-4 md:mr-1" />
+                                <span className="hidden md:inline">Edit</span>
                               </Button>
                             </TableCell>
                           </TableRow>
