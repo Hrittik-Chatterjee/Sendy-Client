@@ -62,8 +62,8 @@ const OnGoingParcel = () => {
       });
     } catch (error) {
       console.error("Error cancelling delivery:", error);
-      const errorMessage =
-        (error as { data?: { message?: string } })?.data?.message;
+      const errorMessage = (error as { data?: { message?: string } })?.data
+        ?.message;
       toast.error("Failed to cancel delivery", {
         description: errorMessage || "Something went wrong. Please try again.",
       });
@@ -171,12 +171,13 @@ const OnGoingParcel = () => {
                             Tracking ID: {parcel.trackingId}
                           </CardTitle>
                           <CardDescription className="mt-1">
-                            {parcel.receiverId && typeof parcel.receiverId === "object" && (
-                              <span>
-                                To: {parcel.receiverId.name} (
-                                {parcel.receiverId.email})
-                              </span>
-                            )}
+                            {parcel.receiverId &&
+                              typeof parcel.receiverId === "object" && (
+                                <span>
+                                  To: {parcel.receiverId.name} (
+                                  {parcel.receiverId.email})
+                                </span>
+                              )}
                           </CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
@@ -243,9 +244,7 @@ const OnGoingParcel = () => {
                           variant="destructive"
                           size="sm"
                           onClick={() => handleCancelDelivery(parcel._id)}
-                          disabled={
-                            isCancelling && cancellingId === parcel._id
-                          }
+                          disabled={isCancelling && cancellingId === parcel._id}
                           className="ml-4"
                         >
                           <XCircle className="h-4 w-4 mr-2" />
