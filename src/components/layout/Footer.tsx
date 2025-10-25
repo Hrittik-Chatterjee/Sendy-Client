@@ -3,19 +3,19 @@ import { Logo } from "@/assets/icons/Logo";
 const Footer = () => {
   return (
     <footer className="bg-background border-t">
-      <div className="mx-auto container space-y-8  py-6 sm:px-6 lg:space-y-16 lg:px-4">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div>
+      <div className="mx-auto container space-y-8 px-4 py-8 sm:px-6 lg:space-y-12 lg:py-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="md:col-span-2 lg:col-span-1">
             <div className="text-foreground">
               <Logo />
             </div>
 
-            <p className="mt-4 max-w-xs text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm sm:text-base text-muted-foreground">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
               cupiditate quae nam molestias.
             </p>
 
-            <ul className="mt-8 flex gap-6">
+            <ul className="mt-6 flex flex-wrap gap-4 sm:gap-6">
               <li>
                 <a
                   href="#"
@@ -134,7 +134,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:col-span-1 lg:col-span-2 lg:grid-cols-4">
             <div>
               <p className="font-medium text-foreground">Services</p>
 
@@ -310,7 +310,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs sm:text-sm text-center sm:text-left text-muted-foreground">
           &copy; 2022. Company Name. All rights reserved.
         </p>
       </div>
