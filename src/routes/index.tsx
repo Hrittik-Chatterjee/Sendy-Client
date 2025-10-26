@@ -16,6 +16,7 @@ import { adminSidebarItems } from "./adminSidebarItems";
 import { senderSideBarItems } from "./senderSidebarItems";
 import { receiverSidebarItems } from "./receiverSidebarItems";
 import Unauthorized from "@/pages/Unauthorized";
+import NotFound from "@/pages/NotFound";
 import TrackParcel from "@/pages/TrackParcel";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
@@ -88,5 +89,9 @@ export const router = createBrowserRouter([
   {
     Component: Unauthorized,
     path: "/unauthorized",
+  },
+  {
+    Component: NotFound,
+    path: "*",
   },
 ]);
