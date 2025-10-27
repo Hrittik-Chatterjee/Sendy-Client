@@ -49,6 +49,10 @@ const TrackParcel = () => {
           <p className="text-muted-foreground">
             Enter your tracking ID to see real-time updates
           </p>
+          <p className="text-muted-foreground">
+            Demo Tracking Id For testing purpose:
+            TRK031581935a0bb4873a3cb47f201f8753{" "}
+          </p>
         </div>
 
         {/* Tracking Form */}
