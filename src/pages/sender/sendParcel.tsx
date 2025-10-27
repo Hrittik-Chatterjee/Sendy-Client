@@ -87,12 +87,12 @@ const SendParcel = () => {
               name="receiverId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Receiver ID</FormLabel>
+                  <FormLabel>
+                    Write this Receiver ID for testing purpose :
+                    68ffd6457d5260c50aa951a6
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter receiver ID (24 hex characters)"
-                      {...field}
-                    />
+                    <Input placeholder="68ffd6457d5260c50aa951a6" {...field} />
                   </FormControl>
                   <FormDescription>
                     The MongoDB ObjectId of the receiver
