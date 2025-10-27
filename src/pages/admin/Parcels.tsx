@@ -38,7 +38,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Package as PackageIcon,
   Search,
@@ -60,7 +59,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
-import type { IParcel, TParcelStatus, IStatusLog } from "@/types";
+import type { IParcel, TParcelStatus } from "@/types";
 import {
   Pagination,
   PaginationContent,
@@ -95,11 +94,7 @@ const Parcels = () => {
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [selectedParcel, setSelectedParcel] = useState<IParcel | null>(null);
-  const [statusForm, setStatusForm] = useState({
-    status: "",
-    location: "",
-    note: "",
-  });
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const allParcels = (response?.data || []) as IParcel[];
   const meta = response?.meta;
@@ -144,11 +139,7 @@ const Parcels = () => {
 
   const handleUpdateStatusClick = (parcel: IParcel) => {
     setSelectedParcel(parcel);
-    setStatusForm({
-      status: parcel.currentStatus,
-      location: "",
-      note: "",
-    });
+    setSelectedStatus(parcel.currentStatus);
     setStatusDialogOpen(true);
   };
 
@@ -159,34 +150,12 @@ const Parcels = () => {
 
   const handleStatusSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedParcel) return;
+    if (!selectedParcel || !selectedStatus) return;
 
     try {
       const payload: Record<string, unknown> = {
-        currentStatus: statusForm.status,
+        currentStatus: selectedStatus,
       };
-
-      // Create new status log entry
-      const newStatusLog: IStatusLog = {
-        status: statusForm.status as TParcelStatus,
-        timestamp: new Date().toISOString(),
-      };
-
-      // Add location if provided
-      if (statusForm.location.trim()) {
-        newStatusLog.location = statusForm.location.trim();
-      }
-
-      // Add note if provided
-      if (statusForm.note.trim()) {
-        newStatusLog.note = statusForm.note.trim();
-      }
-
-      // Always add the new status log to track history
-      payload.statusLogs = [
-        ...(selectedParcel.statusLogs || []),
-        newStatusLog,
-      ];
 
       await updateParcel({
         parcelId: selectedParcel._id,
@@ -196,7 +165,7 @@ const Parcels = () => {
       toast.success("Parcel status updated successfully!");
       setStatusDialogOpen(false);
       setSelectedParcel(null);
-      setStatusForm({ status: "", location: "", note: "" });
+      setSelectedStatus("");
     } catch (error) {
       const errorMessage =
         error && typeof error === "object" && "data" in error
@@ -523,10 +492,8 @@ const Parcels = () => {
               <div className="space-y-2">
                 <Label htmlFor="status">Status *</Label>
                 <Select
-                  value={statusForm.status}
-                  onValueChange={(value) =>
-                    setStatusForm({ ...statusForm, status: value })
-                  }
+                  value={selectedStatus}
+                  onValueChange={setSelectedStatus}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
@@ -541,31 +508,6 @@ const Parcels = () => {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  value={statusForm.location}
-                  onChange={(e) =>
-                    setStatusForm({ ...statusForm, location: e.target.value })
-                  }
-                  placeholder="Current location (optional)"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="note">Note</Label>
-                <Textarea
-                  id="note"
-                  value={statusForm.note}
-                  onChange={(e) =>
-                    setStatusForm({ ...statusForm, note: e.target.value })
-                  }
-                  placeholder="Additional notes (optional)"
-                  rows={3}
-                />
-              </div>
-
               <DialogFooter>
                 <Button
                   type="button"
@@ -577,7 +519,7 @@ const Parcels = () => {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={isUpdating || !statusForm.status}
+                  disabled={isUpdating || !selectedStatus}
                 >
                   {isUpdating ? "Updating..." : "Update Status"}
                 </Button>
