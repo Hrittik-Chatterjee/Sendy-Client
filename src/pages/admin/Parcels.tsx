@@ -166,27 +166,27 @@ const Parcels = () => {
         currentStatus: statusForm.status,
       };
 
-      // Add status logs with location and note if provided
-      const newStatusLog: Partial<IStatusLog> = {
+      // Create new status log entry
+      const newStatusLog: IStatusLog = {
         status: statusForm.status as TParcelStatus,
         timestamp: new Date().toISOString(),
       };
 
-      if (statusForm.location) {
-        newStatusLog.location = statusForm.location;
+      // Add location if provided
+      if (statusForm.location.trim()) {
+        newStatusLog.location = statusForm.location.trim();
       }
 
-      if (statusForm.note) {
-        newStatusLog.note = statusForm.note;
+      // Add note if provided
+      if (statusForm.note.trim()) {
+        newStatusLog.note = statusForm.note.trim();
       }
 
-      // only add to statusLogs if location or note is provided
-      if (statusForm.location || statusForm.note) {
-        payload.statusLogs = [
-          ...(selectedParcel.statusLogs || []),
-          newStatusLog,
-        ];
-      }
+      // Always add the new status log to track history
+      payload.statusLogs = [
+        ...(selectedParcel.statusLogs || []),
+        newStatusLog,
+      ];
 
       await updateParcel({
         parcelId: selectedParcel._id,
