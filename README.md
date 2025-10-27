@@ -2,6 +2,12 @@
 
 A modern, full-stack parcel delivery management system built with React, TypeScript, and Vite. Sendy provides a comprehensive platform for managing parcel deliveries with role-based access control for Admins, Senders, and Receivers.
 
+## Live Deployment
+
+🌐 **Frontend**: [https://sendy-client.vercel.app](https://sendy-client.vercel.app)
+
+🔗 **Backend API**: [https://sendy-parcel-delivery-backend-imgi31cq1.vercel.app/api/v1](https://sendy-parcel-delivery-backend-imgi31cq1.vercel.app/api/v1)
+
 ## Project Overview
 
 Sendy is a web-based parcel delivery management system. The platform offers:
@@ -267,11 +273,6 @@ Password: @Password1
 - **ADMIN** - Full system access
 - **SENDER** - Can send parcels and track deliveries
 - **RECEIVER** - Can receive parcels and confirm deliveries
-
-## Live URL
-
-**Production:** _[Add your deployed URL here]_
-**Backend URL:**
 
 ## API Integration
 
