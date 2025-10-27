@@ -8,6 +8,29 @@ A modern, full-stack parcel delivery management system built with React, TypeScr
 
 🔗 **Backend API**: [https://sendy-parcel-delivery-backend-imgi31cq1.vercel.app/api/v1](https://sendy-parcel-delivery-backend-imgi31cq1.vercel.app/api/v1)
 
+Use these credentials to test different user roles:
+
+### Admin Account
+
+```
+Email: super@gmail.com
+Password: 12345678
+```
+
+### Sender Account
+
+```
+Email: sender@demo.com
+Password: @Password1
+```
+
+### Receiver Account
+
+```
+Email: receiver@demo.com
+Password: @Password1
+```
+
 ## Project Overview
 
 Sendy is a web-based parcel delivery management system. The platform offers:
@@ -30,9 +53,8 @@ Sendy is a web-based parcel delivery management system. The platform offers:
 #### For Receivers
 
 - View incoming parcels
-- Confirm parcel delivery with OTP verification
+- Confirm parcel delivery 
 - Track delivery history
-- Real-time delivery notifications
 
 #### For Admins
 
@@ -106,33 +128,6 @@ Sendy is a web-based parcel delivery management system. The platform offers:
 
    ```
 
-## Project Structure
-
-```
-sendy-client/
-├── src/
-│   ├── assets/          # Static assets (icons, images)
-│   ├── components/      # Reusable UI components
-│   │   ├── layout/      # Layout components (Navbar, Footer, etc.)
-│   │   ├── modules/     # Feature-specific components
-│   │   └── ui/          # shadcn/ui components
-│   ├── constants/       # Application constants (roles, etc.)
-│   ├── pages/           # Page components
-│   │   ├── admin/       # Admin dashboard pages
-│   │   ├── sender/      # Sender dashboard pages
-│   │   └── receiver/    # Receiver dashboard pages
-│   ├── providers/       # Context providers
-│   ├── routes/          # Route configuration
-│   ├── types/           # TypeScript type definitions
-│   ├── utils/           # Utility functions
-│   ├── App.tsx          # Main app component
-│   └── main.tsx         # Application entry point
-├── .env                 # Environment variables
-├── package.json         # Project dependencies
-├── tsconfig.json        # TypeScript configuration
-├── vite.config.ts       # Vite configuration
-└── tailwind.config.js   # Tailwind CSS configuration
-```
 
 ## Available Scripts
 
@@ -143,34 +138,13 @@ sendy-client/
 
 ## Demo Credentials for Testing
 
-Use these credentials to test different user roles:
 
-### Admin Account
-
-```
-Email: super@gmail.com
-Password: 12345678
-```
-
-### Sender Account
-
-```
-Email: sender@demo.com
-Password: @Password1
-```
-
-### Receiver Account
-
-```
-Email: receiver@demo.com
-Password: @Password1
-```
 
 ### Quick Testing Guide
 
 1. **Login as Sender** (`sender@demo.com`)
    - Navigate to "Send Parcel"
-   - Create a new parcel with receiver email: `receiver@demo.com`
+   - Create a new parcel with receiver id: `68ffd6457d5260c50aa951a6`
    - Note the tracking ID
 
 2. **Login as Admin** (`super@gmail.com`)
@@ -184,8 +158,8 @@ Password: @Password1
    - Parcel will be marked as "Delivered"
 
 4. **Test Edit/Cancel Restrictions**
-   - Login as sender and try to cancel a parcel after it's dispatched (should fail)
-   - Try to edit parcel details after dispatch (should be restricted)
+   - Sender Can only cancel the parcel if it's in 'Requested' status.
+   - Receiver can only confirm deliver if it's in the 'In Transit' status
 
 ## Parcel Delivery Workflow
 
@@ -212,7 +186,7 @@ Password: @Password1
 5. **Sender Edit/Cancel Permissions**
    - **Before Dispatch**: Sender can edit parcel details or cancel the parcel
    - **After Dispatch**: Sender **CANNOT** edit or cancel the parcel
-   - Cancellation is only allowed for statuses: "Requested" or "Approved"
+   - Cancellation is only allowed for statuses: "Requested"
 
 6. **Parcel In Transit**
    - Admin updates status to: **"In Transit"**
@@ -224,16 +198,6 @@ Password: @Password1
    - Status changes to: **"Delivered"**
    - **Important**: Delivery confirmation is ONLY available in "In Transit" status
 
-### Status Permissions Summary
-
-| Status | Sender Can Edit | Sender Can Cancel | Receiver Can Confirm | Admin Can Update |
-|--------|----------------|-------------------|---------------------|------------------|
-| Requested | ✅ Yes | ✅ Yes | ❌ No | ✅ Yes |
-| Approved | ✅ Yes | ✅ Yes | ❌ No | ✅ Yes |
-| Dispatched | ❌ No | ❌ No | ❌ No | ✅ Yes |
-| In Transit | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
-| Delivered | ❌ No | ❌ No | ❌ No | ❌ No |
-| Cancelled | ❌ No | ❌ No | ❌ No | ❌ No |
 
 ## Features Breakdown
 
@@ -274,10 +238,4 @@ Password: @Password1
 - **SENDER** - Can send parcels and track deliveries
 - **RECEIVER** - Can receive parcels and confirm deliveries
 
-## API Integration
 
-The application connects to a REST API backend. Configure the API endpoint in the `.env` file:
-
-```env
-VITE_BASE_URL=<your-backend-api-url>
-```
