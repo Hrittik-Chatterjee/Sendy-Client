@@ -135,7 +135,7 @@ sendy-client/
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
-## Test Credentials
+## Demo Credentials for Testing
 
 Use these credentials to test different user roles:
 
@@ -149,16 +149,85 @@ Password: 12345678
 ### Sender Account
 
 ```
-Email: sender@sendy.com
-Password: sender123
+Email: sender@demo.com
+Password: @Password1
 ```
 
 ### Receiver Account
 
 ```
-Email: receiver@sendy.com
-Password: receiver123
+Email: receiver@demo.com
+Password: @Password1
 ```
+
+### Quick Testing Guide
+
+1. **Login as Sender** (`sender@demo.com`)
+   - Navigate to "Send Parcel"
+   - Create a new parcel with receiver email: `receiver@demo.com`
+   - Note the tracking ID
+
+2. **Login as Admin** (`super@gmail.com`)
+   - Go to "Parcels Management"
+   - Find the newly created parcel
+   - Update status from "Requested" → "Approved" → "Dispatched" → "In Transit"
+
+3. **Login as Receiver** (`receiver@demo.com`)
+   - After admin approval, parcel will appear in "Incoming Parcels"
+   - When status is "In Transit", click "Confirm Delivery"
+   - Parcel will be marked as "Delivered"
+
+4. **Test Edit/Cancel Restrictions**
+   - Login as sender and try to cancel a parcel after it's dispatched (should fail)
+   - Try to edit parcel details after dispatch (should be restricted)
+
+## Parcel Delivery Workflow
+
+### Complete Delivery Flow
+
+1. **Sender Creates Parcel Request**
+   - Sender logs in and creates a new parcel delivery request
+   - Provides receiver details, pickup/delivery addresses, and parcel weight
+   - Parcel is created with status: **"Requested"**
+
+2. **Admin Reviews and Approves**
+   - Admin reviews the parcel request in the admin dashboard
+   - Admin can approve or update the status
+   - Once approved, status changes to: **"Approved"**
+
+3. **Receiver Can View Parcel**
+   - After admin approval, the receiver can see the parcel in their dashboard
+   - Receiver can track the parcel status in real-time
+
+4. **Admin Updates Status to Dispatched**
+   - Admin changes status to: **"Dispatched"**
+   - Admin can further update to: **"In Transit"**
+
+5. **Sender Edit/Cancel Permissions**
+   - **Before Dispatch**: Sender can edit parcel details or cancel the parcel
+   - **After Dispatch**: Sender **CANNOT** edit or cancel the parcel
+   - Cancellation is only allowed for statuses: "Requested" or "Approved"
+
+6. **Parcel In Transit**
+   - Admin updates status to: **"In Transit"**
+   - Receiver can see real-time updates
+
+7. **Delivery Confirmation**
+   - **Only when status is "In Transit"**: Receiver can confirm delivery
+   - Receiver clicks "Confirm Delivery" button
+   - Status changes to: **"Delivered"**
+   - **Important**: Delivery confirmation is ONLY available in "In Transit" status
+
+### Status Permissions Summary
+
+| Status | Sender Can Edit | Sender Can Cancel | Receiver Can Confirm | Admin Can Update |
+|--------|----------------|-------------------|---------------------|------------------|
+| Requested | ✅ Yes | ✅ Yes | ❌ No | ✅ Yes |
+| Approved | ✅ Yes | ✅ Yes | ❌ No | ✅ Yes |
+| Dispatched | ❌ No | ❌ No | ❌ No | ✅ Yes |
+| In Transit | ❌ No | ❌ No | ✅ Yes | ✅ Yes |
+| Delivered | ❌ No | ❌ No | ❌ No | ❌ No |
+| Cancelled | ❌ No | ❌ No | ❌ No | ❌ No |
 
 ## Features Breakdown
 
@@ -174,19 +243,23 @@ Password: receiver123
 ### Admin Dashboard
 
 - **Analytics** - System-wide statistics, charts, and metrics
-- **Parcels Management** - View and manage all parcels
+- **Parcels Management** - View, manage, and update all parcel statuses
 - **Users Management** - View and manage all users
+- **Status Control** - Update parcel status through the delivery workflow
 
 ### Sender Dashboard
 
 - **Send Parcel** - Create new parcel delivery requests
 - **Ongoing Parcels** - Track active deliveries
+- **Edit Parcel** - Modify parcel details (only before dispatch)
+- **Cancel Parcel** - Cancel delivery (only before dispatch)
 - **History** - View past deliveries
 
 ### Receiver Dashboard
 
-- **Incoming Parcels** - View parcels being delivered to you
-- **Confirm Delivery** - Confirm receipt with OTP
+- **Incoming Parcels** - View parcels being delivered (visible after admin approval)
+- **Confirm Delivery** - Confirm receipt (only when status is "In Transit")
+- **Track Status** - Real-time tracking of incoming parcels
 - **History** - View received parcels history
 
 ## Authentication & Authorization
