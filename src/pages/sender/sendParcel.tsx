@@ -15,6 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useSendParcelMutation } from "@/redux/features/parcel/parcel.api";
 import { toast } from "sonner";
+import { Copy, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 const sendParcelSchema = z.object({
   receiverId: z
@@ -38,8 +41,11 @@ const sendParcelSchema = z.object({
 
 type SendParcelFormValues = z.infer<typeof sendParcelSchema>;
 
+const DEMO_RECEIVER_ID = "68ffd6457d5260c50aa951a6";
+
 const SendParcel = () => {
   const [sendParcel, { isLoading }] = useSendParcelMutation();
+  const [copied, setCopied] = useState(false);
 
   const form = useForm<SendParcelFormValues>({
     resolver: zodResolver(sendParcelSchema),
@@ -50,6 +56,18 @@ const SendParcel = () => {
       deliveryAddress: "",
     },
   });
+
+  const handleCopyReceiverId = () => {
+    navigator.clipboard.writeText(DEMO_RECEIVER_ID);
+    setCopied(true);
+    toast.success("Receiver ID copied to clipboard!");
+
+    // Auto-fill the receiver ID field
+    form.setValue("receiverId", DEMO_RECEIVER_ID);
+
+    // Reset copied state after 2 seconds
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const onSubmit = async (data: SendParcelFormValues) => {
     try {
@@ -87,15 +105,48 @@ const SendParcel = () => {
               name="receiverId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Write this Receiver ID for testing purpose :
-                    68ffd6457d5260c50aa951a6
-                  </FormLabel>
+                  <FormLabel>Receiver ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="68ffd6457d5260c50aa951a6" {...field} />
+                    <Input
+                      placeholder="Enter receiver's MongoDB ObjectId"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>
-                    The MongoDB ObjectId of the receiver
+                  <FormDescription className="space-y-2">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm">
+                        Demo testing receiver ID (receiver@demo.com):
+                      </span>
+                      <Badge
+                        variant="secondary"
+                        className="font-mono text-xs px-2 py-1"
+                      >
+                        {DEMO_RECEIVER_ID}
+                      </Badge>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCopyReceiverId}
+                        className="h-7 gap-1"
+                      >
+                        {copied ? (
+                          <>
+                            <CheckCircle2 className="h-3 w-3" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3 w-3" />
+                            Copy & Fill
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      The MongoDB ObjectId of the receiver (24 character hex
+                      string)
+                    </p>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
